@@ -67,7 +67,7 @@ with open(csvpath) as csvfile:
         candidate_fraction = round(candidate_fraction, 3)
         candidate_percentage.append(candidate_fraction)
     
-    # month_with_rate = list(zip( ,candidate_percentage))
+
     election_results = list(zip(sorted_candidates,candidate_percentage))
 
     for row in election_results:
