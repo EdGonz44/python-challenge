@@ -16,31 +16,15 @@ rate_change = 0
 average_profit = 0
 greatest_inc = 0
 greatest_dec = 0
+
+month_extreme_inc = str
+month_extreme_dec = str
+number_extreme_dec = 0
+number_extreme_inc = 0
 monthly_note = []
 monthly_data = []
 change_data = []
 
-
-# def total_months(monthly_note):
-#     months = 0
-#     for row in monthly_note:
-#         months = months + 1
-   
-   
-    
-
-# def total_net_profit(monthly_data):
-#     net_profit = 0
-#     monthly_profit_change = 0
-#     for row in monthly_data:
-#         monthly_profit_change = int(row)
-#         net_profit = net_profit + monthly_profit_change
-    
-    
-
-# def average_profit_change():
-#     average_profit = total_net_profit / total_months
-#     print(f"Average Change: ${average_profit}")
 
 
     
@@ -92,59 +76,58 @@ with open(csvpath) as csvfile:
 
 
     average_profit = (pos_profit + neg_profit) / (len(change_data) - 1)
+    average_profit = round(average_profit,2)
 
-    
+    month_with_rate = list(zip(monthly_note, change_data))
 
-        
-   
-    # for i  in enumerate(monthly_number)
-    #     profit_holder = i
-    #     monthly_profit_change = next(i)
+    for row in month_with_rate:
+        rate_holder = row[1]
+        if rate_holder > greatest_inc:
+            greatest_inc = rate_holder
+            month_extreme_inc = row[0]
+            number_extreme_inc = row[1]
 
-#    for row in change_data:
-#         rate_change = row
-#         if profit_holder > 0:
-#             rate_change = profit_holder
-#             pos_profit = pos_profit + rate_change
+        elif rate_holder < greatest_dec:
+            greatest_dec = rate_holder
+            month_extreme_dec = row[0]
+            number_extreme_dec = row[1]
 
-#         elif profit_holder < 0:
-#             rate_change = profit_holder
-#             neg_profit = neg_profit + rate_change
+        else:
+            rate_holder = row[1]
+            
 
-
-    # print(change_data[79])
-    # print(len(change_data))
-        
-
-
-    # for row in monthly_number:
-    #     monthly_profit_change = row
-    #     profit_holder = next(row)
-    # #     if 
-    # #     rate_change.append(profit_holder - monthly_profit_change)
-    # # print(rate_change)
-        
-   
-
-
-
-
-    # print(f"negative total: {neg_profit}")
-    # print(f"positive total profit: {pos_profit}")
-
+    print("Financial Analysis")
+    print("---------------------")
     print(f"Total Months: {months}")
     print(f"Total: ${net_profit}")
     print(f"Average Change: ${average_profit}")
+    print(f"Greatest Increase in Profits: {month_extreme_inc} ({number_extreme_inc})")
+    print(f"Greatest Decrease in Profits: {month_extreme_dec} ({number_extreme_dec})")
+
+    # Specify the file to write to
+output_path = os.path.join("..", "PyBank", "analysis","Analysis.csv")
+
+# Open the file using "write" mode. Specify the variable to hold the contents
+with open(output_path, 'w', newline= '') as csvfile:
 
 
-    # print(f"CSV Header: {csv_header}")
-    
-    # for row in csvreader:
-    #     print(row[0])
+    # Initialize csv.writer
+    csvwriter = csv.writer(csvfile, delimiter=' ')
 
-    # total_months(csv_lists)
-    # total_net_profit(csv_lists)
-    
+
+    # Write the first row (column headers)
+    # csvwriter.writerow(['First Name', 'Last Name', 'SSN'])
+    csvwriter.writerow(["Financial","Analysis"])
+    csvwriter.writerow(["---------------------"])
+    csvwriter.writerow(["Total", "Months", months])
+    csvwriter.writerow(["Total", (f"${net_profit}")])
+    csvwriter.writerow(["Average", "Change", (f"${average_profit}")])
+    csvwriter.writerow(["Greatest", "Increase", "In", "Profits:", month_extreme_inc, (f"${number_extreme_inc}")])
+    csvwriter.writerow(["Greatest", "Decrease", "in", "Profits:", month_extreme_dec, (f"${number_extreme_dec}")])
+  
+
+
+
    
         
 
